@@ -9,10 +9,6 @@
     "build": "node scripts/build.mjs",
     "check": "node scripts/check.mjs",
     "test": "npm run build && npm run check",
-    "deploy": "wrangler deploy",
-    "preview": "wrangler dev"
-  },
-  "devDependencies": {
-    "wrangler": "^4.149.0"
+    "deploy": "npm test && npx --yes wrangler@4.136.3 pages deploy dist --project-name=teloa-security --branch=main"
   }
 }

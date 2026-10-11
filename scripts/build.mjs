@@ -1,4 +1,5 @@
-import {cp,mkdir,mkdtemp,readFile,rm} from 'node:fs/promises'
+import {cp,mkdir,mkdtemp,readFile,rm,writeFile} from 'node:fs/promises'
+import {createHash} from 'node:crypto'
 import {execFileSync} from 'node:child_process'
 import {tmpdir} from 'node:os'
 import {resolve,join} from 'node:path'
@@ -22,5 +23,18 @@ try{
   await cp(resolve(checkout,'01-standard/diagrams'),resolve(target,'01-standard/diagrams'),{recursive:true})
   await cp(resolve(checkout,'02-usage/examples'),resolve(target,'examples'),{recursive:true})
   for(const name of ['LICENSE','LICENSE-DOCS'])await cp(resolve(checkout,name),resolve(target,name))
+  // Preserve the demo's response controls and allow only its exact inline scripts.
+  const sourceHeaders=await readFile(resolve(tool,'_headers'),'utf8')
+  const hashes=[]
+  for(const name of ['architecture.html','01-standard/diagrams/index.html']){
+    const html=await readFile(resolve(target,name),'utf8')
+    for(const match of html.matchAll(/<script>([\s\S]*?)<\/script>/g))hashes.push("'sha256-"+createHash('sha256').update(match[1]).digest('base64')+"'")
+  }
+  const lines=sourceHeaders.trimEnd().split('\n').slice(1)
+  const csp=lines.find(line=>line.trimStart().startsWith('Content-Security-Policy:'))
+  if(!csp||hashes.length!==2)throw Error('Unexpected demo security policy or inline scripts')
+  const common=lines.filter(line=>line!==csp).join('\n')
+  const demoCsp=csp.replace("script-src 'self'","script-src 'self' "+hashes.join(' '))
+  await writeFile(resolve(output,'_headers'),'/*\n'+common+'\n\n/'+demo.path+'/*\n'+demoCsp+'\n')
   console.log('Built security portal with standalone demo '+demo.revision)
 }finally{await rm(checkout,{recursive:true,force:true})}

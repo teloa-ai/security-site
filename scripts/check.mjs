@@ -5,6 +5,11 @@ import {fileURLToPath} from 'node:url'
 
 const root=fileURLToPath(new URL('../dist/',import.meta.url))
 const page=await readFile(resolve(root,'index.html'),'utf8')
+const headers=await readFile(resolve(root,'_headers'),'utf8')
+assert.match(headers,/\/agent-baseline-assessor\/\*\n  Content-Security-Policy:/)
+assert.match(headers,/connect-src 'none'/)
+assert.match(headers,/X-Content-Type-Options: nosniff/)
+assert.equal((headers.match(/'sha256-[^']+'/g)||[]).length,2)
 assert.match(page,/data-security-page="home"/)
 assert.match(await readFile(resolve(root,'report/index.html'),'utf8'),/mailto:security@teloa.ai/)
 assert.match(await readFile(resolve(root,'.well-known/security.txt'),'utf8'),/Policy: https:\/\/security\.teloa\.ai\/report\//)
