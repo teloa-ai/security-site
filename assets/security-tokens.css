@@ -1,0 +1,14 @@
+:root {
+ --te-color-green-700:#355e49; --te-color-green-800:#284b39;
+ --te-color-neutral-900:#26322c; --te-color-neutral-600:#59665e;
+ --te-color-neutral-200:#dce3d9; --te-color-paper:#f8f9f5;
+ --te-color-sage:#eef2e9; --te-color-green-100:#eaf0e5;
+ --te-brand:var(--te-color-green-700); --te-brand-hover:var(--te-color-green-800);
+ --te-text:var(--te-color-neutral-900); --te-muted:var(--te-color-neutral-600);
+ --te-border:var(--te-color-neutral-200); --te-subtle:var(--te-color-sage);
+ --te-soft:var(--te-color-green-100); --te-paper:var(--te-color-paper);
+ --te-font:Inter,"Helvetica Neue","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+ --te-radius:8px; --te-target:44px;
+}
+.dark { --te-brand:#a7d3b8; --te-brand-hover:#c3e4ce; --te-text:#e5ebe7;
+ --te-muted:#abb9ae; --te-border:#35433a; --te-subtle:#19221c; --te-soft:#20392b; --te-paper:#151b18; }
