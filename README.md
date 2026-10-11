@@ -22,11 +22,13 @@ Initiated and maintained by Teloa AI Security.
 
 This independent repository publishes the public security portal to Cloudflare Pages at `security.teloa.ai`. The organization-level `teloa-ai.github.io` repository remains available for the organization homepage and shared resources.
 
-The site uses static HTML and local scripts for bilingual content and shared navigation, with no analytics or data collection. English is the default; `?lang=zh-CN` selects Simplified Chinese.
+The site uses static HTML and local scripts for bilingual content and shared navigation, with Cloudflare Web Analytics for aggregated visits and performance. The assessment demo keeps responses and evidence in the browser; it does not send assessment content to analytics. Its request traffic can be inspected in Cloudflare's server-side analytics. English is the default; `?lang=zh-CN` selects Simplified Chinese.
 
 The baseline is an independent, self-hostable [project](https://github.com/teloa-ai/agent-baseline-assessor). This portal hosts only its demo at `/agent-baseline-assessor/`. The build retrieves the public revision pinned in `demo-project.json`; it does not add portal navigation or dependencies to the tool or architecture gallery.
 
 With Node.js 22+ and Git installed, run `npm test` to assemble and check `dist/`. Maintainers can deploy with `npm run deploy` after authenticating the Cloudflare CLI. No credentials belong in this repository. Update the pinned revision explicitly when publishing a reviewed project release.
+
+If automatic Cloudflare Web Analytics injection is enabled, exclude `/agent-baseline-assessor/` with a hostname-and-path configuration rule. Portal analytics remain enabled; the independent demo retains its `connect-src 'none'` policy.
 
 Report security issues via [security@teloa.ai](mailto:security@teloa.ai) and follow the [project-specific guidance](https://security.teloa.ai/report/?lang=en). Machine-readable contact information is available at [security.txt](https://security.teloa.ai/.well-known/security.txt).
 

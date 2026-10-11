@@ -11,11 +11,14 @@ assert.match(headers,/connect-src 'none'/)
 assert.match(headers,/X-Content-Type-Options: nosniff/)
 assert.equal((headers.match(/'sha256-[^']+'/g)||[]).length,2)
 assert.match(page,/data-security-page="home"/)
+assert.match(page,/script-src 'self' https:\/\/static\.cloudflareinsights\.com; connect-src 'self'/)
+assert.match(page,/Assessment content stays in your browser/)
 assert.match(await readFile(resolve(root,'report/index.html'),'utf8'),/mailto:security@teloa.ai/)
 assert.match(await readFile(resolve(root,'.well-known/security.txt'),'utf8'),/Policy: https:\/\/security\.teloa\.ai\/report\//)
 for(const name of ['index.html','01-standard/diagrams/index.html']){
   const html=await readFile(resolve(root,'agent-baseline-assessor',name),'utf8')
   assert.doesNotMatch(html,/site-chrome|TeloaSiteChrome|teloa-site-header/,'The project demo must remain independent from the portal')
+  assert.doesNotMatch(html,/cloudflareinsights/,'Browser analytics must not be injected into the independent project source')
 }
 for(const locale of ['en','zh-CN','ja','ko','de','fr','es']){
   for(const diagram of ['agent-stack.png','reference-architecture.png'])await readFile(resolve(root,'agent-baseline-assessor/01-standard/diagrams',locale,diagram))

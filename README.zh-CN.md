@@ -18,11 +18,13 @@ Teloa AI Security 是源于 Teloa 开发实践的 AI 安全研究与开源计划
 
 本独立仓库通过 Cloudflare Pages 发布公共安全门户 `security.teloa.ai`。组织级 `teloa-ai.github.io` 仓库保留用于组织主页与公共资源。
 
-门户使用静态 HTML 与本地脚本切换中英文内容并渲染统一导航，不含统计或数据收集。默认英文，`?lang=zh-CN` 切换中文。
+门户使用静态 HTML 与本地脚本切换中英文内容并渲染统一导航，使用 Cloudflare Web Analytics 汇总访问与性能；基线演示的回答、证据等评估内容保存在浏览器，不发送给统计服务。演示请求量可通过 Cloudflare 服务端统计查看。默认英文，`?lang=zh-CN` 切换中文。
 
 基线是可自行部署的[独立项目](https://github.com/teloa-ai/agent-baseline-assessor)。本门户仅在 `/agent-baseline-assessor/` 提供演示；构建从其公开仓库获取 `demo-project.json` 指定的版本，不给工具或架构图册注入门户导航或运行依赖。
 
 安装 Node.js 22+ 与 Git 后，运行 `npm test` 构建并检查 `dist/`。维护者登录 Cloudflare CLI 后，可用 `npm run deploy` 发布。仓库不保存凭据；发布已审查的项目版本时，显式更新演示版本。
+
+如果启用了 Cloudflare 统计脚本自动注入，请通过主机名与路径配置规则排除 `/agent-baseline-assessor/`。门户访问统计保持启用，独立演示保留 `connect-src 'none'` 策略。
 
 品牌与小松鼠素材的权利说明见 [assets/README.md](assets/README.md)。
 
